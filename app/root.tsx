@@ -2,6 +2,7 @@ import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction, LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
+  Link,
   Links,
   LiveReload,
   Meta,
@@ -10,8 +11,13 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
-import { getUser } from "~/session.server";
+import logo from "~/assets/torama_logo.png";
+
+import { getUser } from "~/services/session.server";
 import stylesheet from "~/tailwind.css";
+import ThemeSwitcher from "./components/ThemeSwitcher";
+import { ThemeProvider } from "./contexts/ThemeContext";
+import { NavBar } from "./components/NavBar";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -24,19 +30,109 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function App() {
   return (
-    <html lang="en" className="h-full">
+    <ThemeProvider>
+      <Document>
+        <Layout>
+          <Outlet />
+        </Layout>
+      </Document>
+    </ThemeProvider>
+
+  );
+}
+
+export function ErrorBoundry({ error }: any) {
+  console.log(error);
+  return (
+    <Document>
+      <Layout>
+        <h1>Sorry An Error Occured</h1>
+        <pre>{error}</pre>
+      </Layout>
+    </Document>
+  );
+}
+type iDocType = {
+  children: React.ReactNode;
+  title?: string;
+};
+
+function Document({ children, title }: iDocType) {
+  return (
+    <html lang="en">
       <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
+        <title>{title ? title : "MongoDB Remix Template"}</title>
       </head>
-      <body className="h-full">
-        <Outlet />
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
+      <body className="dark:bg-black dark:text-white">
+        {/* <CommandPalette projects={projects} openMe={false} /> */}
+        {children}
+        {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
+      <Scripts />
     </html>
   );
 }
+
+function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col h-screen mx-2">
+     {/* <NavBar /> */}
+     
+      <div className="flex flex-1 overflow-hidden">
+
+        {/* <aside className="hidden sm:block my-2 py-2 px-2 w-64 overflow-y-auto bg-gray-100   dark:bg-gray-900">
+          <ul className="list-none">
+            <li><Link to="/movies">Movies</Link></li>
+            <li><Link to="/movies/add"> * Add</Link></li>
+            <li><Link to="/about">About</Link></li>
+            <li><Link to="https://www.mongodb.com/docs/drivers/node/current/">MongoDB Driver docs</Link></li>
+          </ul>
+
+          <ul className="list-none">
+            <li><Link to="/expenses">Expenses</Link></li>
+            <li><Link to="/expenses/add"> * Add</Link></li>
+          </ul>
+        </aside> */}
+        <main className="flex flex-1 my-1 overflow-y-auto paragraph px-4">
+          {children}
+        </main>
+      </div>
+    </div>
+  );
+}
+
+
+// export default function App() {
+//   return (
+//     <ThemeProvider>
+//       <html lang="en" className="h-full">
+//         <head>
+//           <meta charSet="utf-8" />
+//           <meta name="viewport" content="width=device-width,initial-scale=1" />
+//           <Meta />
+//           <Links />
+//         </head>
+//         <body className="dark:bg-black dark:text-white h-full">
+//           <nav className="flex justify-between h-16 items-center width-full">
+//             <Link to="/">
+//               <img src={logo} className="h-12 w-12 mx-2" alt="Logo" />
+//             </Link>
+//             <div className="float-right">
+//               <ThemeSwitcher />
+//             </div>
+//           </nav>
+//           <SideBar />
+//           <Outlet />
+//           <ScrollRestoration />
+//           <Scripts />
+//           <LiveReload />
+//         </body>
+//       </html>
+//     </ThemeProvider>
+//   );
+// }
+
+
+

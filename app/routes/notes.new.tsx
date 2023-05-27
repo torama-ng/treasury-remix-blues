@@ -4,7 +4,7 @@ import { Form, useActionData } from "@remix-run/react";
 import { useEffect, useRef } from "react";
 
 import { createNote } from "~/models/note.server";
-import { requireUserId } from "~/session.server";
+import { requireUserId } from "~/services/session.server";
 
 export const action = async ({ request }: ActionArgs) => {
   const userId = await requireUserId(request);
@@ -48,12 +48,13 @@ export default function NewNotePage() {
   return (
     <Form
       method="post"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 8,
-        width: "100%",
-      }}
+      className="flex flex-col gap-4 w-full"
+      // style={{
+      //   display: "flex",
+      //   flexDirection: "column",
+      //   gap: 8,
+      //   width: "100%",
+      // }}
     >
       <div>
         <label className="flex w-full flex-col gap-1">

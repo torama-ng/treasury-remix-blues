@@ -49,7 +49,7 @@ export async function requireUserId(
   const userId = await getUserId(request);
   if (!userId) {
     const searchParams = new URLSearchParams([["redirectTo", redirectTo]]);
-    throw redirect(`/login?${searchParams}`);
+    throw redirect(`/auth?mode=login&${searchParams}`);
   }
   return userId;
 }
@@ -80,7 +80,7 @@ export async function createUserSession({
     headers: {
       "Set-Cookie": await sessionStorage.commitSession(session, {
         maxAge: remember
-          ? 60 * 60 * 24 * 7 // 7 days
+          ? 60 * 60 * 24 * 30 // 30 days
           : undefined,
       }),
     },
