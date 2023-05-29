@@ -1,8 +1,7 @@
 import { Link } from '@remix-run/react'
 import React from 'react'
 import { HiMenuAlt3 } from "react-icons/hi";
-import digiverse from '~/assets/digiverse_logo.png'
-import digiverse_white from '~/assets/digiverse_white.jpg'
+import digiverse_tp from '~/assets/digiverse_tp.png'
 const menuItems = [
     {
         label: 'Dashboard',
@@ -136,7 +135,7 @@ export const SideBar = () => {
             >
                 <div className="py-3 flex   dark:text-red-500 ">
                     {
-                        open && <img src={digiverse_white} alt="digiverse" className='flex-1 text-left  w-24' />
+                        open && <img src={digiverse_tp} alt="digiverse" className='flex-1 text-left  w-24' />
                     }
                     
                     <HiMenuAlt3

@@ -1,6 +1,7 @@
 import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import { AccountItem } from "~/components/Accounts/AccountItem";
 import { NavBar } from "~/components/NavBar";
 import { SideBar } from "~/components/SideBar";
 
@@ -9,7 +10,6 @@ import { requireUserId } from "~/services/session.server";
 import { useUser } from "~/utils/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
-
     const userId = await requireUserId(request);
 
     const accounts = await listAllAccounts(userId as string);
@@ -24,8 +24,6 @@ export default function AccountsPage() {
 
     return (
         <>
-
-
             <SideBar />
             <div className="flex w-full h-full min-h-screen flex-col ml-10">
                 {/* <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
@@ -46,9 +44,17 @@ export default function AccountsPage() {
 
                 <main className="flex h-full">
                     <div className="h-full w-80 border-r">
-                        <Link to="new" className="block p-4 text-xl text-blue-500">
-                            + New Accounts
-                        </Link>
+                        <div className="flex items-center">
+                            <div >
+                                <Link to="new" className="block hover:text-blue-400 p-2 text-xl text-blue-500">
+                                    + New Accounts
+                                </Link>
+                            </div>
+                            <div >
+                                ({data.accounts.length})
+                            </div>
+                        </div>
+
 
                         <hr />
 
@@ -57,17 +63,7 @@ export default function AccountsPage() {
                         ) : (
                             <ol>
                                 {data.accounts.map((acct) => (
-                                    <li key={acct.id}>
-                                        <NavLink to={acct.id.toString()}
-                                            className={({ isActive }) =>
-                                                `block border-b p-4 text-xl ${isActive ? "light:bg-white dark:bg-gray-900" : ""}`
-                                            }
-
-                                        >
-                                            {acct.name} {acct.accountType}
-                                            <p > <span className="text-xs font-medium ">{acct.accountNumber}  </span>{acct.status}</p>
-                                        </NavLink>
-                                    </li>
+                                    <AccountItem key={acct.id} account={acct} />
                                 ))}
                             </ol>
                         )}
@@ -82,6 +78,8 @@ export default function AccountsPage() {
 
     );
 }
+
+
 
 export function Index() {
     return (
