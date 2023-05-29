@@ -1,6 +1,8 @@
 import { Link } from '@remix-run/react'
 import React from 'react'
 import { HiMenuAlt3 } from "react-icons/hi";
+import digiverse from '~/assets/digiverse_logo.png'
+import digiverse_white from '~/assets/digiverse_white.jpg'
 const menuItems = [
     {
         label: 'Dashboard',
@@ -16,7 +18,7 @@ const menuItems = [
         link: '/'
     },
     {
-        label: 'Products',
+        label: 'Accounts',
         icon: <svg
             className="w-6 h-6 fill-current inline-block"
             fill="currentColor"
@@ -27,10 +29,10 @@ const menuItems = [
                 d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z"
             ></path>
         </svg>,
-        link: '/'
+        link: '/accounts'
     },
     {
-        label: 'Reports',
+        label: 'Transactions',
         icon: <svg
             className="w-6 h-6 fill-current inline-block"
             fill="currentColor"
@@ -44,7 +46,7 @@ const menuItems = [
                 clip-rule="evenodd"
             ></path>
         </svg>,
-        link: '/'
+        link: '/transactions'
     },
     {
         label: 'Messages',
@@ -127,17 +129,19 @@ export const SideBar = () => {
     const [open, setOpen] = React.useState(true);
     return (
         <>
-
-
             <aside id="menu"
-                className={` min-h-screen  
-                  ${open ? "w-72" : "w-16"} hidden md:flex duration-500  flex-col space-y-2 bg-gray-100 dark:bg-gray-900 px-4`}
+                className={` h-screen  overflow-y-auto    left-0 
+                  ${open ? "w-64" : "w-16"} hidden md:flex duration-500  flex-col space-y-2 bg-gray-100 dark:bg-gray-900 px-4`}
 
             >
-                <div className="py-3 flex justify-end dark:text-red-500 ">
+                <div className="py-3 flex   dark:text-red-500 ">
+                    {
+                        open && <img src={digiverse_white} alt="digiverse" className='flex-1 text-left  w-24' />
+                    }
+                    
                     <HiMenuAlt3
                         size={26}
-                        className="cursor-pointer"
+                        className="cursor-pointer text-right"
                         onClick={() => setOpen(!open)}
                     />
                 </div>
@@ -158,4 +162,3 @@ export const SideBar = () => {
         </>
     )
 }
-// hover:bg-teal-500

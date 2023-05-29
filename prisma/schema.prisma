@@ -21,6 +21,7 @@ model User {
   password Password?
   notes    Note[]
   Expense  Expense[]
+  Accounts Account[]
 }
 
 model Password {
@@ -66,9 +67,9 @@ model Expense {
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 
-  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId   String
-  vendorId String?
+  vendorId String
 }
 
 model Vendor {
@@ -100,4 +101,71 @@ model PayHistory {
   payer       String
   Expense     Expense? @relation(fields: [expenseId], references: [id])
   expenseId   String?
+}
+
+model Account {
+  id            Int           @id @default(autoincrement())
+  name          String
+  accountNumber String        @unique @db.VarChar(10)
+  balance       Float         @default(0)
+  accountType   AccountType   @default(BASIC)
+  status        AccountStatus @default(PENDING)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  userId        String
+  User          User          @relation(fields: [userId], references: [id])
+  Transactions  Transaction[]
+}
+
+enum AccountStatus {
+  PENDING
+  APPROVED
+}
+
+enum AccountType {
+  BASIC
+  PREMIUM
+  // Add other types as needed
+}
+
+model Transaction {
+  id                 Int               @id @default(autoincrement())
+  amount             Float
+  direction          Direction
+  transType          TransactionType
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  accountId          Int
+  Account            Account           @relation(fields: [accountId], references: [id])
+  charges            Float
+  destinationBank    String?
+  destinationAccount String?
+  bankId             String?
+  Bank               Bank?             @relation(fields: [bankId], references: [id])
+  status             TransactionStatus @default(PENDING)
+}
+
+enum Direction {
+  IN
+  OUT
+}
+
+enum TransactionStatus {
+  PENDING
+  SUCCESS
+  REVERSED
+  DECLINED
+}
+
+enum TransactionType {
+  DEPOSIT
+  TRANSFER
+}
+
+model Bank {
+  id           String        @id @default(cuid())
+  name         String
+  code         String        @unique
+  // Other fields as necessary...
+  Transactions Transaction[]
 }

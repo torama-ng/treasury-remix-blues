@@ -42,7 +42,7 @@ function AuthForm() {
 
                 <Form method="post" className=" shadow-2xl rounded-xl bg-white h-[20rem] text-center  dark:bg-gray-800" id="auth-form">
                     <div className='py-4 '>
-                        {authMode === 'login' ? <FaLock className="mx-auto " /> : <FaUserPlus className="mx-auto " />}
+                        {authMode === 'login' ? <FaLock size={40} className="mx-auto  " /> : <FaUserPlus size={40} className="mx-auto " />}
                     </div>
 
                     <div className='px-4'>
@@ -85,12 +85,12 @@ function AuthForm() {
 
                 </Form>
 
-                
+
 
             </div>
 
 
-            
+
         </>
     );
 }

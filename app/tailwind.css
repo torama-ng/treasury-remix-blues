@@ -8,4 +8,14 @@
     -webkit-appearance: none;
     margin: 0;
   }
+
+  h1 {
+    @apply text-2xl font-bold p-2;
+  }
+  h2 {
+    @apply text-xl font-medium p-2;
+  }
+  p {
+    @apply text-base p-1;
+  }
 }

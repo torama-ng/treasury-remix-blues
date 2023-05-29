@@ -9,6 +9,18 @@ export async function loader({ params }: LoaderArgs) {
         return redirect("/expenses");
     }
 
+    if (params["*"] === "login") {
+        return redirect("/auth?mode=login&type=email");
+    }
+
+
+    if (params["*"] === "signup") {
+        return redirect("/auth?mode=signup&type=email");
+    }
+    if (params["*"] === "join") {
+        return redirect("/auth?mode=signup&type=email");
+    }
+
     throw new Response('404 - path not found  ', { status: 404 });
 }
 

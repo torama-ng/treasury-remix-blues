@@ -1,12 +1,11 @@
 import type { Password, User } from "@prisma/client";
 import { createUserSession } from "~/services/session.server";
-import {  validateEmail } from "~/utils/utils";
+import { validateEmail } from "~/utils/utils";
 import bcrypt from "bcryptjs";
 import { json } from "@remix-run/node";
 import { prisma } from "~/services/db.server";
 
 export type { User } from "@prisma/client";
-
 
 export async function getUserById(id: User["id"]) {
   return prisma.user.findUnique({ where: { id } });
@@ -16,7 +15,7 @@ export async function getUserByEmail(email: User["email"]) {
   return prisma.user.findUnique({ where: { email } });
 }
 
-export async function createUser(email: User["email"], password: string ) {
+export async function createUser(email: User["email"], password: string) {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   return prisma.user.create({
@@ -32,8 +31,13 @@ export async function createUser(email: User["email"], password: string ) {
   });
 }
 
-export async function createFireUser({email, firebaseUID, displayName, photoURL}:any) {
-// export async function createFireUser(email: User["email"], password: string) {
+export async function createFireUser({
+  email,
+  firebaseUID,
+  displayName,
+  photoURL,
+}: any) {
+  // export async function createFireUser(email: User["email"], password: string) {
   // const hashedPassword = await bcrypt.hash(password, 10);
   //  get user details from token and store
   // const firebaseUID = "";
@@ -48,7 +52,6 @@ export async function createFireUser({email, firebaseUID, displayName, photoURL}
       displayName,
       photoURL,
       authType,
-      
     },
   });
 }
@@ -61,7 +64,6 @@ export async function verifyLogin(
   email: User["email"],
   password: Password["hash"]
 ) {
-  
   const userWithPassword = await prisma.user.findUnique({
     where: { email },
     include: {
@@ -87,7 +89,7 @@ export async function verifyLogin(
   return userWithoutPassword;
 }
 
-export async function loginUserByEmail( props: {
+export async function loginUserByEmail(props: {
   email: User["email"];
   password: Password["hash"];
   request: Request;
@@ -116,11 +118,10 @@ export async function loginUserByEmail( props: {
 export async function signUpUserByEmail(props: {
   email: User["email"];
   password: Password["hash"];
-  request: Request,
+  request: Request;
   redirectTo?: string;
   remember?: boolean;
 }) {
-
   const { email, password, request, redirectTo = "/" } = props;
   if (!validateEmail(email)) {
     return json(
@@ -166,5 +167,4 @@ export async function signUpUserByEmail(props: {
     request,
     userId: user.id,
   });
-
 }

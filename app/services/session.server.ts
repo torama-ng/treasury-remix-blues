@@ -1,4 +1,4 @@
-import { createCookieSessionStorage, redirect } from "@remix-run/node";
+import { createCookieSessionStorage, json, redirect } from "@remix-run/node";
 import invariant from "tiny-invariant";
 
 import type { User } from "~/models/user.server";
@@ -48,8 +48,8 @@ export async function requireUserId(
 ) {
   const userId = await getUserId(request);
   if (!userId) {
-    const searchParams = new URLSearchParams([["redirectTo", redirectTo]]);
-    throw redirect(`/auth?mode=login&${searchParams}`);
+    // const searchParams = new URLSearchParams([["redirectTo", redirectTo]]);
+    throw redirect(`/auth?mode=login`);
   }
   return userId;
 }

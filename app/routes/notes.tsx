@@ -2,6 +2,7 @@ import type { LoaderArgs} from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import type { SetStateAction } from "react";
 import { SideBar } from "~/components/SideBar";
 
 import { getNoteListItems } from "~/models/note.server";
@@ -22,8 +23,8 @@ export default function NotesPage() {
 
   return (
     <>
-      <SideBar />
-      <div className="flex h-full min-h-screen flex-col ml-6">
+      <SideBar  />
+      <div className="flex h-full min-h-screen flex-col ml-10">
         <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
           <h1 className="text-3xl font-bold">
             <Link to=".">Notes</Link>

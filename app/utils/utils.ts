@@ -8,6 +8,7 @@ import { twMerge } from "tailwind-merge";
 import type { User } from "~/models/user.server";
 
 const DEFAULT_REDIRECT = "/";
+export const APP_NAME = "Torama Super App"
 
 /**
  * This should be used any time the redirect path is user-provided
@@ -77,6 +78,8 @@ export function validateEmail(email: unknown): email is string {
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+
 
 export default function FormatDate(input: string | number): string {
   const date = new Date(input);

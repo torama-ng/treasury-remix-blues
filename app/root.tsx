@@ -2,7 +2,6 @@ import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction, LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
-  Link,
   Links,
   LiveReload,
   Meta,
@@ -11,13 +10,12 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
-import logo from "~/assets/torama_logo.png";
+import { APP_NAME } from "~/utils/utils";
 
 import { getUser } from "~/services/session.server";
 import stylesheet from "~/tailwind.css";
-import ThemeSwitcher from "./components/ThemeSwitcher";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import { NavBar } from "./components/NavBar";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -30,28 +28,35 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <Document>
-        <Layout>
-          <Outlet />
-        </Layout>
-      </Document>
-    </ThemeProvider>
+
+    // Error boundary not working
+    // <ErrorBoundary>
+      <ThemeProvider>
+
+        <Document>
+          <Layout>
+            <Outlet />
+          </Layout>
+        </Document>
+      </ThemeProvider>
+
+    // </ErrorBoundary>
+
 
   );
 }
 
-export function ErrorBoundry({ error }: any) {
-  console.log(error);
-  return (
-    <Document>
-      <Layout>
-        <h1>Sorry An Error Occured</h1>
-        <pre>{error}</pre>
-      </Layout>
-    </Document>
-  );
-}
+// export function ErrorBoundry({ error }: any) {
+//   console.log(error);
+//   return (
+//     <Document>
+//       <Layout>
+//         <h1>Sorry An Error Occured</h1>
+//         <pre>{error}</pre>
+//       </Layout>
+//     </Document>
+//   );
+// }
 type iDocType = {
   children: React.ReactNode;
   title?: string;
@@ -63,14 +68,16 @@ function Document({ children, title }: iDocType) {
       <head>
         <Meta />
         <Links />
-        <title>{title ? title : "MongoDB Remix Template"}</title>
+        <title>{title ? title : APP_NAME}</title>
       </head>
       <body className="dark:bg-black dark:text-white">
         {/* <CommandPalette projects={projects} openMe={false} /> */}
         {children}
         {process.env.NODE_ENV === "development" && <LiveReload />}
+        <ScrollRestoration />
+        <Scripts />
+
       </body>
-      <Scripts />
     </html>
   );
 }
@@ -78,8 +85,8 @@ function Document({ children, title }: iDocType) {
 function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col h-screen mx-2">
-     {/* <NavBar /> */}
-     
+      {/* <NavBar /> */}
+
       <div className="flex flex-1 overflow-hidden">
 
         {/* <aside className="hidden sm:block my-2 py-2 px-2 w-64 overflow-y-auto bg-gray-100   dark:bg-gray-900">

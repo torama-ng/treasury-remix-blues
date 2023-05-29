@@ -30,8 +30,6 @@ export const action = async ({ request }: ActionArgs) => {
     const remember = formData.get("remember") === "on" ? true : false;
     let email = formData.get("email") as string;
     let password = formData.get("password") as string;
-console.log('authType', authType);
-
 
     // google login and signup
     if (authType && authType === 'google') {
